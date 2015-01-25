@@ -169,7 +169,7 @@ impact on the project.)
 
 'total_acc_x_train.txt' was mention twice within the same sentence, while 'total_acc_y_train.txt' was omitted.
 
-The relevant section of the REAMDM.txt file is shown below.
+The relevant section of the README.txt file is shown below.
 The dataset includes the following files:
 =========================================
 
