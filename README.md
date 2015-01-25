@@ -162,3 +162,19 @@ The sensor signals (accelerometer and gyroscope) were pre-processed by applying 
 
 
 
+
+==================================================================
+(Note: I believe there is an error in the README.txt file provided with the data set, however it has no
+impact on the project.)
+
+'total_acc_x_train.txt' was mention twice within the same sentence, while 'total_acc_y_train.txt' was omitted.
+
+The relevant section of the REAMDM.txt file is shown below.
+The dataset includes the following files:
+=========================================
+
+Error:
+- 'train/Inertial Signals/total_acc_x_train.txt': The acceleration signal from the smartphone accelerometer X axis in standard gravity units 'g'. Every row shows a 128 element vector. The same description applies for the 'total_acc_x_train.txt' and 'total_acc_z_train.txt' files for the Y and Z axis. 
+
+Corrected:
+- 'train/Inertial Signals/total_acc_x_train.txt': The acceleration signal from the smartphone accelerometer X axis in standard gravity units 'g'. Every row shows a 128 element vector. The same description applies for the 'total_acc_y_train.txt' and 'total_acc_z_train.txt' files for the Y and Z axis. 
