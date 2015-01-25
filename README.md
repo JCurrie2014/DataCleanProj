@@ -1,6 +1,7 @@
 ##################################################
 #### Getting and Cleaning Data Project ###########
 Written by Jerry Currie 1/24/2015
+
 ##################################################
 [Objective]
 The goal of this project is to create a tidy dataset from raw, 
@@ -9,30 +10,135 @@ Smartlab company. This tidy data set will consist of
 of accelerometer readings from 30 subjects
 performing 6 different physical activities. The final
 data set contains the average mean and average standard deviation
-from aggregated measurements of acceleration and angular velocity. 
-The data was captured using a Samsung Galaxy S II smartphone. The
-final data set is grouped by subject and activity levels.  
+from preciously aggregated measurements of acceleration and 
+angular velocity. The data was captured using a Samsung Galaxy S II 
+smartphone. The final data set is grouped by subject and activity 
+levels.  
 
-[Final Output Units]
-The final output contains the average means and average standard
-deviations already computed by the Smartlab company. Column
-headings containing "acc" represent acceleration expressed in
-standard gravity units 'g'. Column headings containing
-"gyro" represent angular velocity and are expressed in
-radians/second. Each metric contains observations for the
-X, Y & Z axis.
+Project Data URL:
+https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip 
 
-[Project Instructions]
-1. Merge training and the test sets to create one data set.
-2. Extract only the measurements on the mean and standard deviation for each measurement. 
-3. Use descriptive activity names to name the activities in the data set
-4. Appropriately label the data set with descriptive variable names. 
-5 From the data set in step 4, create a second, independent tidy data set with the average of each variable for each activity and each subject.
+The data was downloaded and unzipped to an R working directory. The file structure is
+shown below. 
+ 
+[File Structure]
+UCI HAR Dataset (dir)
+activity_labels.txt
+features.txt
+features_info.txt
+README.txt
+UCI HAR Dataset/test (dir)
+UCI HAR Dataset/test/subject_test.txt
+UCI HAR Dataset/test/X_test.txt
+UCI HAR Dataset/test/y_test.txt
+UCI HAR Dataset/test/Inertial Signals (dir)
+UCI HAR Dataset/test/Inertial Signals/body_acc_x_test.txt
+UCI HAR Dataset/test/Inertial Signals/body_acc_y_test.txt
+UCI HAR Dataset/test/Inertial Signals/body_acc_z_test.txt
+UCI HAR Dataset/test/Inertial Signals/body_gyro_x_test.txt
+UCI HAR Dataset/test/Inertial Signals/body_gyro_y_test.txt
+UCI HAR Dataset/test/Inertial Signals/body_gyro_z_test.txt
+UCI HAR Dataset/test/Inertial Signals/total_acc_x_test.txt
+UCI HAR Dataset/test/Inertial Signals/total_acc_y_test.txt
+UCI HAR Dataset/test/Inertial Signals/total_acc_z_test.txt
+UCI HAR Dataset/train (dir)
+UCI HAR Dataset/train/subject_test.txt
+UCI HAR Dataset/train/X_train.txt
+UCI HAR Dataset/train/y_train.txt
+UCI HAR Dataset/train/Inertial Signals (dir)
+UCI HAR Dataset/train/Inertial Signals/body_acc_x_train.txt
+UCI HAR Dataset/train/Inertial Signals/body_acc_y_train.txt
+UCI HAR Dataset/train/Inertial Signals/body_acc_z_train.txt
+UCI HAR Dataset/train/Inertial Signals/body_gyro_x_train.txt
+UCI HAR Dataset/train/Inertial Signals/body_gyro_y_train.txt
+UCI HAR Dataset/train/Inertial Signals/body_gyro_z_train.txt
+UCI HAR Dataset/train/Inertial Signals/total_acc_x_train.txt
+UCI HAR Dataset/train/Inertial Signals/total_acc_y_train.txt
+UCI HAR Dataset/train/Inertial Signals/total_acc_z_train.txt
+
+[File Usage]
+In order to piece together the primary data set, we need to
+attach appropriate labels to the rows and columns. 
+(note: I also created an additional column for "type", identifying 
+the test or train subject groups.)
+
+Primary data sets:
+* UCI HAR Dataset/test/X_test.txt  (2947 observations x 561 measurements)
+* UCI HAR Dataset/train/X_train.txt  (7352 observations x 561 measurements)
+
+Features: (columns heading)
+* features.txt (561 rows)
+features.txt contain column headings for the Primary data sets. Arrange by row,
+the features table must be transposed, then used as column headings for the
+primary data sets.
+(note: this step should be done prior to adding columns to the primary data sets)
+
+Type: (new column)
+I added a type column (named type) to each of the primary data set which identifies either 
+the "test"" or "train"" group. This wasnt't necessary, but it may provide additional 
+flexibility in the future on other types of analysis.
+
+Activity id: (new column)
+* UCI HAR Dataset/test/y_test.txt (2947 observations)
+* UCI HAR Dataset/train/y_train.txt (7352 observations)
+y_test.txt and y_train.txt contain activity vector ids and
+are added as the first column in the respective primary
+data sets.
+
+Acitivity labels: (new column)
+* activity_labels.txt (6 rows x 2 columns)
+activity labels are joined on the first column (id) of each
+of the primary data sets. This creates an addition column within
+each data set that contains a text description of each activity.
+
+Subject column (new column)
+* UCI HAR Dataset/test/subject_test.txt (2947 rows)
+* UCI HAR Dataset/train/subject_train.txt (7352 rows)
+contents of subject_test.txt and subject_train.txt are
+added as the first column in the respective primary 
+data sets. 
+
+[Data Frames]
+* dftest (2947 observations x 565 measurements)
+* dftrain  (7352 observations x 565 measurements)
+At this point, you've built the dftest and dftrain data.frames
+which contain a par of complete labeled data sets for all 
+observations
+
+* dftraintest  (10299 observations x 565 measurements) 
+Complete data set where dftest and dftrain are merged together
+as single data.frame
+
+* dfmeantraintest  (10299 observations x 46 measurements)  
+dfmeantraintest is a subset of dftraintest and consists of all
+data having column headings that includes "mean" within their title.
+(note: subject, id, activity and type are excluded from this 
+data.frame)
+
+
+* dfsdtraintest  (10299 observations x 33 measurements) 
+dfmeantraintest is a subset of dftraintest and consists of all
+data having column headings that includes "std" within their title.
+(note: subject, id, activity and type are excluded from this 
+data.frame)
+
+* dfmeansdtraintest  (10299 observations x 83 measurements) 
+dfmeansdtraintest is a merged version of dfmeantraintest and dfsdtraintest, 
+where subject, id, activity and type are added back into the
+data.frame as identifying columns.
+
+* dffinal (40 observations x 81 measurements) 
+dffinal is the aggregation of means grouped by subject and activity.
+This is the final data set for this assignment.
+
+
+###########################################################
 
 (note: The raw data found in the Inertial Signals folders was
 not used. All test and train data were obtained from the
 X-test.txt and X-train.txt files found in the respective
-directories)
+directories which contained summarized values created by
+the Inertial Signals content.)
 
 
 [Orignal data sets]
